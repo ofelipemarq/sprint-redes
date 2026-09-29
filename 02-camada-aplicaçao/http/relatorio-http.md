@@ -169,6 +169,10 @@ A execução retornou `HTTP/1.1 200 OK`, cabeçalhos e o corpo JSON com os parâ
 
 `GET` é normalmente usado para obter recursos e pode transportar parâmetros na URL. `POST` normalmente envia dados no corpo da requisição.
 
+### Dados sensíveis em GET
+
+Dados sensíveis não devem ser enviados pela query string de uma requisição `GET`, pois fazem parte da URL e podem aparecer no histórico do navegador, em logs de servidores, proxies e outros registros intermediários. Quando houver necessidade de transmitir informações sensíveis, deve-se evitar colocá-las na URL e utilizar HTTPS para proteger os dados durante o transporte.
+
 ### Cabeçalhos x corpo
 
 Os cabeçalhos transportam informações de controle e metadados. O corpo carrega o conteúdo da mensagem quando aplicável.

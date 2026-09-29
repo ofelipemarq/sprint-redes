@@ -20,15 +20,17 @@ requisicao = conexao.recv(1024)
 print("Requisição recebida:")
 print(requisicao.decode())
 
+corpo = "Ola do servidor!\n"
+corpo_bytes = corpo.encode("utf-8")
+
 resposta = (
     "HTTP/1.1 200 OK\r\n"
     "Content-Type: text/plain; charset=utf-8\r\n"
-    "Content-Length: 18\r\n"
+    f"Content-Length: {len(corpo_bytes)}\r\n"
     "\r\n"
-    "Ola do servidor!\n"
-)
+).encode("utf-8") + corpo_bytes
 
-conexao.sendall(resposta.encode())
+conexao.sendall(resposta)
 
 print("Resposta enviada.")
 
