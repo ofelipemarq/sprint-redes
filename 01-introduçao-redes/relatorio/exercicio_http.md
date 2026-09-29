@@ -219,3 +219,117 @@ Execução do cliente:
 ### Observação técnica
 
 O valor de `Content-Length` é calculado a partir do corpo codificado em UTF-8. Dessa forma, o cabeçalho informa automaticamente a quantidade correta de bytes enviados no corpo da resposta, evitando divergências entre o cabeçalho e os dados transmitidos.
+
+---
+
+## Parte 4 — Atraso e vazão
+
+### Exercício 1 — Atraso em dois enlaces
+
+Dados:
+
+- `L = 7,5 Mbits`
+- `R = 1,5 Mbits/s`
+- `N = 2 enlaces`
+
+O atraso de transmissão em um enlace é:
+
+```text
+d_trans = L / R
+d_trans = 7,5 / 1,5
+d_trans = 5 s
+```
+
+Como são dois enlaces e estamos desconsiderando outros atrasos:
+
+```text
+d_total = 2 × 5
+d_total = 10 s
+```
+
+**Resposta:** o atraso total aproximado é **10 segundos**.
+
+### Exercício 2 — Divisão em três pacotes e pipeline
+
+A mensagem de `7,5 Mbits` foi dividida em três pacotes de `2,5 Mbits`.
+
+O atraso de transmissão de cada pacote em um enlace é:
+
+```text
+d_trans = 2,5 / 1,5
+d_trans ≈ 1,67 s
+```
+
+Como há dois enlaces, o primeiro pacote precisa de duas transmissões para chegar ao destino. Enquanto ele percorre o segundo enlace, o pacote seguinte já pode ser transmitido pelo primeiro enlace. Isso cria um **pipeline**.
+
+Para três pacotes e dois enlaces:
+
+```text
+(3 + 2 - 1) × 1,67 ≈ 6,68 s
+```
+
+**Resposta:** o tempo total é aproximadamente **6,67 s**.
+
+A redução em relação aos 10 segundos ocorre porque as transmissões dos pacotes podem se sobrepor: enquanto um pacote está chegando ao destino pelo segundo enlace, o próximo pode estar chegando ao roteador pelo primeiro enlace.
+
+### Exercício 3 — Vazão e gargalo
+
+Os enlaces possuem as seguintes taxas:
+
+```text
+1 Gbps
+100 Mbps
+10 Mbps
+500 Mbps
+```
+
+A vazão fim a fim é limitada pelo enlace de menor capacidade:
+
+```text
+Throughput = min(1 Gbps, 100 Mbps, 10 Mbps, 500 Mbps)
+Throughput = 10 Mbps
+```
+
+**Resposta:** a vazão fim a fim é **10 Mbps**, e o gargalo é o enlace de **10 Mbps**.
+
+### Exercício 4 — Atraso de transmissão
+
+Dados:
+
+- `R = 100 Mbps`
+- `L = 10 Mbits`
+
+```text
+d_trans = L / R
+d_trans = 10 / 100
+d_trans = 0,1 s
+```
+
+**Resposta:** o atraso de transmissão é **0,1 segundo**, ou **100 ms**.
+
+### Exercício 5 — Atraso de propagação
+
+Dados:
+
+- distância = `1000 km = 1.000.000 m = 10^6 m`
+- velocidade de propagação = `2 × 10^8 m/s`
+
+```text
+d_prop = d / s
+d_prop = 10^6 / (2 × 10^8)
+d_prop = 5 × 10^-3 s
+```
+
+Logo:
+
+```text
+5 × 10^-3 s = 0,005 s = 5 ms
+```
+
+**Resposta:** o atraso de propagação é **5 ms**.
+
+### Exercício 6 — Quando cada tipo de atraso domina
+
+Um exemplo em que o **atraso de transmissão** domina ocorre quando um pacote grande precisa ser enviado por um enlace de baixa taxa de transmissão. Por exemplo, se a rede possui enlaces rápidos, mas em determinado ponto existe um enlace de apenas `20 Mbps`, o tempo necessário para colocar todos os bits do pacote nesse enlace aumenta.
+
+Já o **atraso de propagação** domina quando a distância física é muito grande. Por exemplo, ao acessar um servidor localizado na Europa a partir do Brasil, os sinais precisam percorrer milhares de quilômetros. Mesmo viajando muito rapidamente pela fibra óptica, existe um atraso causado pela distância, algo perceptível em aplicações sensíveis à latência, como jogos online.
