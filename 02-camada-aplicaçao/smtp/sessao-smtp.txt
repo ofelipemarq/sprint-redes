@@ -1,0 +1,64 @@
+SESSÃO SMTP — ANA -> BRUNO
+
+220 localhost smtp4dev ready
+EHLO cliente.local
+250-Nice to meet you.
+250-8BITMIME
+250-SIZE
+250-SMTPUTF8
+250-AUTH=CRAM-MD5 PLAIN LOGIN XOAUTH2
+250 AUTH CRAM-MD5 PLAIN LOGIN XOAUTH2
+
+MAIL FROM:<ana@lab.local>
+250 New message started
+
+RCPT TO:<bruno@lab.local>
+250 Recipient accepted
+
+DATA
+354 End message with period
+
+From: Ana <ana@lab.local>
+To: Bruno <bruno@lab.local>
+Subject: Teste SMTP
+
+Ola bruno, mensagem enviada usando protocolo SMTP
+.
+250 Mail accepted
+
+QUIT
+221 Goodbye
+
+
+SESSÃO SMTP — BRUNO -> ANA
+
+220 localhost smtp4dev ready
+EHLO cliente.lab
+250-Nice to meet you.
+250-8BITMIME
+250-SIZE
+250-SMTPUTF8
+250-AUTH=CRAM-MD5 PLAIN LOGIN XOAUTH2
+250 AUTH CRAM-MD5 PLAIN LOGIN XOAUTH2
+
+MAIL FROM:<bruno@lab.local>
+250 New message started
+
+RCPT TO:<ana@lab.local>
+250 Recipient accepted
+
+DATA
+354 End message with period
+
+From: Bruno <bruno@lab.local>
+To: Ana <ana@lab.local>
+Subject: Resposta SMTP
+
+Ola Ana,
+Mensagem recebida. Esta e a resposta do laboratorio SMTP.
+Abraco, Bruno.
+.
+250 Mail accepted
+
+QUIT
+221 Goodbye
